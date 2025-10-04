@@ -1,7 +1,26 @@
-
-
 # Proyecto Ciclismo
 
+- **¡Muy Importante!: Instalar nuevas dependencias deben ejecutar primero**
+
+
+npm install
+
+## COMO SUBIR LOS CAMBIOS A GITHUB PARA QUE LOS DEMAS PODAMOS TRABAJAR REMOTAMENTE
+-  **Para bajar los cambios de git a el dispositivo** 
+git pull origin main
+
+- **Prepara tus archivos para guardarlos**
+git add .
+- **Empaqueta tus cambios con un mensaje**
+git commit -m "Implementado nuevo diseño verde para login y registro"
+
+- **Sube tus cambios a GitHub**
+
+git push origin main
+
+
+
+-------------------------------------------------------------------------------
 ## Equipo
 - Mario
 - Jesús
@@ -35,8 +54,4 @@ npm install bootstrap-icons recharts
 
 ## Notas
 
-- Actualiza este archivo cada vez que se agregue una dependencia o se realice un cambio relevante.
-- Si tienes dudas, consulta aquí antes de instalar nuevas librerías.
-Instale estas dependencias 
-Mario:
-1.npm install bootstrap-icons recharts ==> Iconos
+- Actualizen este archivo cada vez que se agregue una dependencia o se realice un cambio relevante para que asi todos sepamos que tenemos que instalar.
