@@ -12,7 +12,7 @@ git pull origin main
 - **Prepara tus archivos para guardarlos**
 git add .
 - **Empaqueta tus cambios con un mensaje**
-git commit -m "Implementado nuevo diseño verde para login y registro"
+git commit -m "Agregue las notas no hacer caso a este cambio"
 
 - **Sube tus cambios a GitHub**
 

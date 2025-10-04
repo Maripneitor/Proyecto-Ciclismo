@@ -1,8 +1,9 @@
 // src/layouts/OrganizerLayout.jsx
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom'; // 1. Importa Outlet
+import './OrganizerLayout.css';
 
-function OrganizerLayout({ children }) {
+function OrganizerLayout() { // 2. Ya no necesita recibir "children"
   return (
     <div className="d-flex" style={{ minHeight: '100vh' }}>
       <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style={{ width: '280px' }}>
@@ -29,10 +30,19 @@ function OrganizerLayout({ children }) {
           </li>
         </ul>
         <hr />
-        {/* ... (resto del layout) ... */}
+        <div className="dropdown">
+          <a href="#" className="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://i.pravatar.cc/40" alt="" width="32" height="32" className="rounded-circle me-2"/>
+            <strong>Organizador</strong>
+          </a>
+          <ul className="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a className="dropdown-item" href="/login">Cerrar sesión</a></li>
+          </ul>
+        </div>
       </div>
       <main className="w-100 p-4">
-        {children}
+        {/* 3. Aquí es donde se renderizará el contenido de las páginas hijas */}
+        <Outlet />
       </main>
     </div>
   );

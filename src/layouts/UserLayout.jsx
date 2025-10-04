@@ -1,7 +1,7 @@
 // src/layouts/UserLayout.jsx
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
-import './UserLayout.css'; // Estilos específicos para este layout
+import { NavLink, Outlet } from 'react-router-dom'; // Ya estaba importado, solo lo usamos
+import './UserLayout.css';
 
 function UserLayout() {
   return (
@@ -14,7 +14,8 @@ function UserLayout() {
       </header>
       
       <main className="user-content">
-        <Outlet /> {/* Aquí se renderizarán las páginas de usuario */}
+        {/* Usamos Outlet en lugar del contenido directo */}
+        <Outlet />
       </main>
 
       <nav className="user-bottom-nav">

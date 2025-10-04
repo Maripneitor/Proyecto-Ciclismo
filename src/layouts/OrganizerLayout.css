@@ -1,0 +1,10 @@
+/* src/layouts/OrganizerLayout.css */
+
+/*
+  Este estilo asegura que el enlace de la página activa
+  en el menú lateral se resalte con el color verde principal de tu tema.
+*/
+.nav-pills .nav-link.active {
+  background-color: var(--primary-green) !important;
+  color: white !important;
+}

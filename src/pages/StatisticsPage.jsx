@@ -1,3 +1,4 @@
+// src/pages/StatisticsPage.jsx
 import React from 'react';
 import OrganizerLayout from '../layouts/OrganizerLayout';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -19,7 +20,6 @@ function StatisticsPage() {
         </button>
       </div>
 
-      {/* Gráfica */}
       <div className="card mb-4">
         <div className="card-body">
             <h5 className="card-title">Tiempos de Competidores (en minutos)</h5>
@@ -30,13 +30,12 @@ function StatisticsPage() {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="timeMinutes" fill="#007bff" />
+                    <Bar dataKey="timeMinutes" fill="var(--primary-green)" />
                 </BarChart>
             </ResponsiveContainer>
         </div>
       </div>
 
-      {/* Tabla de Datos */}
       <div className="card">
         <div className="card-body">
           <table className="table table-hover">
