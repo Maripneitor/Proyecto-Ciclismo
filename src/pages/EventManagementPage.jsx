@@ -1,13 +1,12 @@
 // src/pages/EventManagementPage.jsx
 import React, { useState } from 'react';
-import OrganizerLayout from '../layouts/OrganizerLayout';
+// Quitamos la importación de OrganizerLayout
 
 const initialEvents = [
     { id: 1, name: 'Carrera del Bosque', date: '2025-10-10', description: 'Una carrera escénica a través del bosque.', distance: 10, type: 'Femenil' },
     { id: 2, name: 'Reto de Montaña', date: '2025-11-05', description: 'Conquista las cimas más altas.', distance: 25, type: 'Varonil' },
     { id: 3, name: 'Tour de la Ciudad', date: '2025-11-20', description: 'Recorre los puntos más icónicos.', distance: 15, type: 'Mixto' }
 ];
-
 const emptyFormState = { id: null, name: '', date: '', description: '', distance: '', type: 'Mixto' };
 
 function EventManagementPage() {
@@ -15,6 +14,7 @@ function EventManagementPage() {
   const [formData, setFormData] = useState(emptyFormState);
   const [isEditing, setIsEditing] = useState(false);
 
+  // ... (toda la lógica de los handlers se mantiene igual)
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -55,13 +55,14 @@ function EventManagementPage() {
   };
 
   return (
-    <OrganizerLayout>
+    <>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="h3">Gestión de Eventos</h1>
         <button className="btn btn-outline-secondary"><i className="bi bi-share me-1"></i> Compartir</button>
       </div>
 
       <div className="row">
+        {/* Columna del Formulario */}
         <div className="col-lg-7">
           <div className="card">
             <div className="card-body">
@@ -104,6 +105,7 @@ function EventManagementPage() {
           </div>
         </div>
 
+        {/* Columna de la Lista de Eventos */}
         <div className="col-lg-5">
           <h4 className="mb-3">Lista de Eventos</h4>
           <div className="list-group">
@@ -120,7 +122,7 @@ function EventManagementPage() {
           </div>
         </div>
       </div>
-    </OrganizerLayout>
+    </>
   );
 }
 

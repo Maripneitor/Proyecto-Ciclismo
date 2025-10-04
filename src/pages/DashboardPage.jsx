@@ -1,6 +1,6 @@
 // src/pages/DashboardPage.jsx
 import React from 'react';
-import OrganizerLayout from '../layouts/OrganizerLayout';
+// Quitamos la importación de OrganizerLayout que ya no se necesita aquí
 
 const StatCard = ({ title, value, icon, color }) => (
   <div className="col-md-4">
@@ -17,8 +17,9 @@ const StatCard = ({ title, value, icon, color }) => (
 );
 
 function DashboardPage() {
+  // Simplemente retornamos el contenido directo, sin el <OrganizerLayout>
   return (
-    <OrganizerLayout>
+    <>
       <h1 className="h3 mb-4">Panel de Control</h1>
       <div className="row">
         <StatCard title="Competidores Activos" value="56/70" icon="bi-bicycle" color="success" />
@@ -36,7 +37,7 @@ function DashboardPage() {
             <button className="btn btn-outline-success">Ver detalles del evento</button>
         </div>
       </div>
-    </OrganizerLayout>
+    </>
   );
 }
 

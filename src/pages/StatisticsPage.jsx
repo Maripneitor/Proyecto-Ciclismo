@@ -1,6 +1,6 @@
 // src/pages/StatisticsPage.jsx
 import React from 'react';
-import OrganizerLayout from '../layouts/OrganizerLayout';
+// Quitamos la importación de OrganizerLayout
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 function StatisticsPage() {
@@ -12,7 +12,7 @@ function StatisticsPage() {
   ];
 
   return (
-    <OrganizerLayout>
+    <>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="h3">Estadísticas del Evento</h1>
         <button className="btn btn-outline-primary">
@@ -62,7 +62,7 @@ function StatisticsPage() {
           </table>
         </div>
       </div>
-    </OrganizerLayout>
+    </>
   );
 }
 
