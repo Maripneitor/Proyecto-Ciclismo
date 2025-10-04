@@ -1,42 +1,36 @@
+// src/layouts/OrganizerLayout.jsx
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-// El prop 'children' renderizará el contenido de la página específica (Estadísticas, etc.)
 function OrganizerLayout({ children }) {
   return (
     <div className="d-flex" style={{ minHeight: '100vh' }}>
-      {/* Menú Lateral (Sidebar) */}
-      <div className="d-flex flex-column flex-shrink-0 p-3 bg-light" style={{ width: '280px' }}>
-        <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-          <span className="fs-4">Menú</span>
+      <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style={{ width: '280px' }}>
+        <a href="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+          <i className="bi bi-gear-wide-connected me-2 fs-4"></i>
+          <span className="fs-4">Organizador</span>
         </a>
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
-          <li className="nav-item">
-            <a href="#" className="nav-link active" aria-current="page">
-              Panel de control
-            </a>
+          <li>
+            <NavLink to="/organizer/dashboard" className="nav-link text-white">
+              <i className="bi bi-speedometer2 me-2"></i> Panel de control
+            </NavLink>
           </li>
           <li>
-            <a href="#" className="nav-link link-dark">
-              Estadísticas
-            </a>
+            <NavLink to="/organizer/events" className="nav-link text-white">
+              <i className="bi bi-calendar-event me-2"></i> Gestión de eventos
+            </NavLink>
           </li>
           <li>
-            <a href="#" className="nav-link link-dark">
-              Gestión de eventos
-            </a>
+            <NavLink to="/organizer/statistics" className="nav-link text-white">
+              <i className="bi bi-graph-up me-2"></i> Estadísticas
+            </NavLink>
           </li>
         </ul>
         <hr />
-        <div className="dropdown">
-          <a href="#" className="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <strong>Perfil</strong>
-          </a>
-          {/* Aquí irían las opciones del perfil */}
-        </div>
+        {/* ... (resto del layout) ... */}
       </div>
-
-      {/* Contenido Principal de la Página */}
       <main className="w-100 p-4">
         {children}
       </main>

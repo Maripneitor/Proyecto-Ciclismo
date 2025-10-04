@@ -1,0 +1,47 @@
+/* src/layouts/UserLayout.css */
+.user-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  max-width: 450px; /* Simula un teléfono */
+  margin: auto;
+  background-color: #fff;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--primary-green);
+  color: white;
+}
+.user-content {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+.user-bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--border-color);
+  background-color: #fff;
+}
+.user-bottom-nav .nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #888;
+}
+.user-bottom-nav .nav-item.active {
+  color: var(--primary-green);
+}
+.user-bottom-nav .nav-item i {
+  font-size: 1.5rem;
+}
+.user-bottom-nav .nav-item span {
+  font-size: 0.75rem;
+}

@@ -1,0 +1,38 @@
+/* src/Theme.css */
+:root {
+  --primary-green: #5cb85c; /* Verde principal del diseño */
+  --dark-green: #4a9d4a;   /* Un tono más oscuro para hover */
+  --background-color: #f0f0f0; /* Fondo general para las vistas internas */
+  --text-color-light: #ffffff;
+  --text-color-dark: #333333;
+  --card-background: #ffffff;
+  --border-color: #ddd;
+
+  --font-headings: 'Poppins', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-color-dark);
+  background-color: var(--background-color);
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-headings);
+  font-weight: 600;
+}
+
+.btn-primary {
+  background-color: var(--primary-green);
+  border: none;
+  font-weight: 500;
+}
+.btn-primary:hover {
+  background-color: var(--dark-green);
+}
+
+.card {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+}

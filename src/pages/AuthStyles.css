@@ -1,0 +1,72 @@
+/* src/pages/AuthStyles.css */
+.auth-page {
+  background-color: var(--primary-green);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-container {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 70vh;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.auth-sidebar {
+  background-color: var(--dark-green); /* Un poco más oscuro para contraste */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.auth-form-container {
+  background-color: var(--primary-green);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-form-container h2 {
+  color: var(--text-color-light);
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.form-control {
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border: 1px solid transparent;
+}
+.form-control:focus {
+  border-color: var(--dark-green);
+  box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+}
+
+.form-label {
+  color: var(--text-color-light);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/* Responsividad */
+@media (max-width: 992px) {
+  .auth-container {
+    grid-template-columns: 1fr;
+  }
+  .auth-sidebar {
+    display: none; /* Ocultamos la barra lateral en pantallas pequeñas */
+  }
+  .auth-form-container {
+    padding: 2rem;
+  }
+}
