@@ -1,20 +1,28 @@
 // src/layouts/UserLayout.jsx
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom'; // Ya estaba importado, solo lo usamos
+import { NavLink, Outlet } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import './UserLayout.css';
 
 function UserLayout() {
+  const { currentUser, logout } = useAuth();
+
   return (
     <div className="user-layout">
       <header className="user-header">
-        <h1>Ciclomex</h1>
         <NavLink to="/user/profile">
-            <i className="bi bi-person-circle fs-3"></i>
+            {currentUser && <img src={`https://i.pravatar.cc/40?u=${currentUser.id}`} alt="Avatar" className="rounded-circle" />}
         </NavLink>
+        <h1>Ciclomex</h1>
+        <div className="d-flex align-items-center">
+            <NavLink to="/user/notifications" className="me-3">
+                <i className="bi bi-bell-fill fs-4 text-white"></i>
+            </NavLink>
+            <button onClick={logout} className="btn btn-sm btn-outline-light">Salir</button>
+        </div>
       </header>
       
       <main className="user-content">
-        {/* Usamos Outlet en lugar del contenido directo */}
         <Outlet />
       </main>
 
