@@ -1,5 +1,5 @@
 // src/contexts/EventContext.jsx
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 // Datos iniciales que se usarán solo la primera vez o si localStorage está vacío
 const initialEvents = [
@@ -8,9 +8,8 @@ const initialEvents = [
     { id: 3, name: 'Tour de la Ciudad', date: '2025-11-20', description: 'Recorre los puntos más icónicos.', distance: 15, type: 'Mixto' }
 ];
 
-const EventContext = createContext();
-
-export const useEvents = () => useContext(EventContext);
+// --- CORRECCIÓN CLAVE: Se añade "export" aquí ---
+export const EventContext = createContext();
 
 export const EventProvider = ({ children }) => {
     // Al iniciar, intenta cargar los eventos desde localStorage

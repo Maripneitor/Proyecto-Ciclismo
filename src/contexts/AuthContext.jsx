@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
-export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     // 1. Al iniciar, intenta leer el usuario desde el localStorage.

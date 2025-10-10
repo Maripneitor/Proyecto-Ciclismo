@@ -1,5 +1,5 @@
 // src/pages/StatisticsPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Nav, Tab } from 'react-bootstrap';
 
@@ -17,8 +17,26 @@ const scatterData = [
   { sector: 4, time: 85.5 }, { sector: 4, time: 86.2 }, { sector: 4, time: 87.1 },
 ];
 
+// Componente memoizado para el gráfico, evita re-renders innecesarios.
+const MemoizedScatterChart = React.memo(({ data }) => (
+  <ResponsiveContainer width="100%" height={400}>
+    <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+      <CartesianGrid />
+      <XAxis type="number" dataKey="sector" name="Sector" unit="" domain={['dataMin - 1', 'dataMax + 1']} tickCount={4} />
+      <YAxis type="number" dataKey="time" name="Tiempo" unit=" min" />
+      <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+      <Scatter name="Tiempos de competidores" data={data} fill="var(--primary-green)" />
+    </ScatterChart>
+  </ResponsiveContainer>
+));
+MemoizedScatterChart.displayName = 'MemoizedScatterChart'; // Ayuda para depurar
+
 function StatisticsPage() {
   const [activeTab, setActiveTab] = useState('general');
+
+  // useMemo asegura que la referencia a los datos no cambie entre renders
+  const memoizedScatterData = useMemo(() => scatterData, []);
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -45,12 +63,7 @@ function StatisticsPage() {
             <div className="card"><div className="card-body">
                 <h5 className="card-title">Análisis de Tiempos por Sector (minutos)</h5>
                 <p className="card-subtitle mb-2 text-muted">Muestra la dispersión de los tiempos en cada punto de control.</p>
-                <ResponsiveContainer width="100%" height={400}>
-                  <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
-                    <CartesianGrid /><XAxis type="number" dataKey="sector" name="Sector" unit="" domain={['dataMin - 1', 'dataMax + 1']} tickCount={4} /><YAxis type="number" dataKey="time" name="Tiempo" unit=" min" />
-                    <Tooltip cursor={{ strokeDasharray: '3 3' }} /><Scatter name="Tiempos de competidores" data={scatterData} fill="var(--primary-green)" />
-                  </ScatterChart>
-                </ResponsiveContainer>
+                <MemoizedScatterChart data={memoizedScatterData} />
             </div></div>
           </Tab.Pane>
         </Tab.Content>

@@ -1,5 +1,7 @@
 // src/pages/UserEventsPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
+import EventCard from '../components/EventCard'; // Importamos el componente optimizado
+import { useNotification } from '../contexts/NotificationContext'; // Para notificaciones
 
 const initialEvents = [
     { id: 1, name: 'Carrera del Bosque', date: '2025-10-10', description: 'Una carrera escénica a través del bosque.', distance: 10, type: 'Femenil' },
@@ -9,32 +11,49 @@ const initialEvents = [
 
 function UserEventsPage() {
   const [registeredEvents, setRegisteredEvents] = useState([2]); 
+  const { addNotification } = useNotification();
 
-  const handleRegister = (eventId) => {
-    if (registeredEvents.includes(eventId)) {
-      setRegisteredEvents(registeredEvents.filter(id => id !== eventId));
-      alert('Has anulado tu inscripción.');
+  // useCallback evita que la función se recree en cada render, optimizando los componentes hijos.
+  const handleRegister = useCallback((eventId) => {
+    let isRegistering = true;
+    setRegisteredEvents(prevRegistered => {
+      if (prevRegistered.includes(eventId)) {
+        isRegistering = false;
+        return prevRegistered.filter(id => id !== eventId);
+      } else {
+        return [...prevRegistered, eventId];
+      }
+    });
+    
+    if (isRegistering) {
+      addNotification('¡Te has inscrito al evento!', 'success');
     } else {
-      setRegisteredEvents([...registeredEvents, eventId]);
-      alert('¡Te has inscrito al evento!');
+      addNotification('Has anulado tu inscripción.', 'info');
     }
-  };
+  }, [addNotification]);
 
-  const upcomingEvents = initialEvents.filter(event => !registeredEvents.includes(event.id));
-  const myEvents = initialEvents.filter(event => registeredEvents.includes(event.id));
+  // useMemo optimiza el cálculo de las listas, solo se recalculan si los eventos registrados cambian.
+  const upcomingEvents = useMemo(() => 
+    initialEvents.filter(event => !registeredEvents.includes(event.id)),
+    [registeredEvents]
+  );
+  
+  const myEvents = useMemo(() => 
+    initialEvents.filter(event => registeredEvents.includes(event.id)),
+    [registeredEvents]
+  );
 
   return (
     <div>
       <h3 className="mb-3">Mis Eventos Inscritos</h3>
       {myEvents.length > 0 ? (
         myEvents.map(event => (
-          <div className="card mb-3 shadow-sm" key={event.id}>
-            <div className="card-body">
-              <h5 className="card-title">{event.name}</h5>
-              <p className="card-text"><small className="text-muted">{event.date} - {event.distance} KM</small></p>
-              <button className="btn btn-outline-danger" onClick={() => handleRegister(event.id)}>Anular Inscripción</button>
-            </div>
-          </div>
+          <EventCard 
+            key={event.id}
+            event={event}
+            onRegister={handleRegister}
+            isRegistered={true}
+          />
         ))
       ) : (
         <div className="alert alert-info">Aún no te has inscrito a ningún evento.</div>
@@ -44,14 +63,12 @@ function UserEventsPage() {
 
       <h3 className="mb-3">Próximos Eventos Disponibles</h3>
       {upcomingEvents.map(event => (
-        <div className="card mb-3 shadow-sm" key={event.id}>
-          <div className="card-body">
-            <h5 className="card-title">{event.name}</h5>
-            <p className="card-text">{event.description}</p>
-            <p className="card-text"><small className="text-muted">{event.date} - {event.distance} KM - {event.type}</small></p>
-            <button className="btn btn-success" onClick={() => handleRegister(event.id)}>Inscribirse</button>
-          </div>
-        </div>
+        <EventCard 
+          key={event.id}
+          event={event}
+          onRegister={handleRegister}
+          isRegistered={false}
+        />
       ))}
     </div>
   );

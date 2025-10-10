@@ -1,6 +1,6 @@
 // src/pages/MonitoringPage.jsx
-import React, { useState } from 'react';
-import { useEvents } from '../contexts/EventContext';
+import React, { useState, useMemo } from 'react';
+import { useEvents } from '../hooks/useEvents.js'; // 1. Corregimos la importación
 
 // Datos de ejemplo para las alertas y estadísticas de cada evento
 const monitoringData = {
@@ -9,13 +9,43 @@ const monitoringData = {
   3: { active: '80/100', finished: '0', alerts: 1, alertList: [{ time: '09:30', text: 'Alerta de Luis Martínez' }] },
 };
 
+// Componente presentacional para la lista de alertas (Memoizado)
+const AlertList = React.memo(({ alerts }) => (
+  <div className="card-body" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+    {alerts.length > 0 ? (
+      alerts.map((alert, index) => (
+        <div key={index} className="alert alert-warning p-2 mb-2 d-flex justify-content-between align-items-center">
+          <span><strong>{alert.time}:</strong> {alert.text}</span>
+          <button className="btn btn-sm btn-outline-dark">Ver</button>
+        </div>
+      ))
+    ) : (
+      <p className="text-muted text-center mt-2">No hay alertas.</p>
+    )}
+  </div>
+));
+AlertList.displayName = 'AlertList';
+
 function MonitoringPage() {
   const { events } = useEvents();
-  // Selecciona el primer evento por defecto si existe
-  const [selectedEventId, setSelectedEventId] = useState(events.length > 0 ? events[0].id : null);
 
-  const selectedEvent = events.find(e => e.id === selectedEventId);
+  // 2. Lógica más segura para seleccionar el primer evento
+  const defaultEventId = useMemo(() => (events.length > 0 ? events[0].id : null), [events]);
+  const [selectedEventId, setSelectedEventId] = useState(defaultEventId);
+
+  // Si no hay eventos, no se intenta buscar
+  const selectedEvent = useMemo(() => events.find(e => e.id === selectedEventId), [events, selectedEventId]);
+
   const eventData = selectedEventId ? monitoringData[selectedEventId] : { active: 'N/A', finished: 'N/A', alerts: 0, alertList: [] };
+
+  if (events.length === 0) {
+    return (
+        <div className="alert alert-info">
+            <h4 className="alert-heading">No hay eventos disponibles</h4>
+            <p>No hay eventos para monitorear en este momento. Por favor, crea un evento en la página de Gestión de Eventos.</p>
+        </div>
+    );
+  }
 
   return (
     <>
@@ -46,18 +76,7 @@ function MonitoringPage() {
           </div>
           <div className="card">
             <div className="card-header fw-bold">Alertas Recientes</div>
-            <div className="card-body" style={{ maxHeight: '300px', overflowY: 'auto' }}>
-              {eventData.alertList.length > 0 ? (
-                eventData.alertList.map((alert, index) => (
-                  <div key={index} className="alert alert-warning p-2 mb-2 d-flex justify-content-between align-items-center">
-                    <span><strong>{alert.time}:</strong> {alert.text}</span>
-                    <button className="btn btn-sm btn-outline-dark">Ver</button>
-                  </div>
-                ))
-              ) : (
-                <p className="text-muted text-center mt-2">No hay alertas.</p>
-              )}
-            </div>
+            <AlertList alerts={eventData.alertList} />
           </div>
         </div>
       </div>

@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    /* 📦 Compatibilidad con Vite */
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "useDefineForClassFields": true,
+    "verbatimModuleSyntax": true,
+
+    /* 🧩 JSX para React 17+ */
+    "jsx": "react-jsx",
+
+    /* 🧠 Comprobaciones estrictas */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    /* 📚 Librerías y entorno */
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+
+    /* 💡 Opcional: soporte de paths si usas @alias */
+    // "baseUrl": "./src",
+    // "paths": {
+    //   "@/*": ["./*"]
+    // }
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
