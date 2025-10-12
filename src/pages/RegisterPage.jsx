@@ -1,10 +1,12 @@
 // src/pages/RegisterPage.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useNotification } from '../contexts/NotificationContext'; // <-- AÑADIDO: Importa el hook
 import './AuthStyles.css';
 
 function RegisterPage() {
   const navigate = useNavigate();
+  const { addNotification } = useNotification(); // <-- AÑADIDO: Obtiene la función
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -19,11 +21,13 @@ function RegisterPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert("Las contraseñas no coinciden.");
+      // CORRECCIÓN: Usa la notificación para el error
+      addNotification("Las contraseñas no coinciden.", "error");
       return;
     }
     console.log("Usuario registrado:", formData);
-    alert("¡Registro exitoso! Ahora puedes iniciar sesión.");
+    // CORRECCIÓN: Usa la notificación para el éxito
+    addNotification("¡Registro exitoso! Ahora puedes iniciar sesión.", "success");
     navigate('/login');
   };
 

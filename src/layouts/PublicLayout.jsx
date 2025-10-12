@@ -20,11 +20,16 @@ const PublicLayout = () => {
           <Navbar.Collapse id="public-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link as={NavLink} to="/" end>Inicio</Nav.Link>
-              <Nav.Link as={NavLink} to="/user/events">Eventos</Nav.Link> {/* <-- RUTA CORREGIDA */}
+              {/* MEJORA: Este enlace ahora solo aparece si eres un usuario logueado */}
+              {currentUser?.role === 'user' && (
+                <Nav.Link as={NavLink} to="/user/events">Eventos</Nav.Link>
+              )}
             </Nav>
             <Nav>
               {currentUser ? (
-                <Button as={Link} to={currentUser.role === 'organizer' ? '/organizer' : '/user'} variant="success">
+                // --- CORRECCIÓN CLAVE AQUÍ ---
+                // Ahora navegamos directamente a la página del panel para evitar la doble redirección.
+                <Button as={Link} to={currentUser.role === 'organizer' ? '/organizer/dashboard' : '/user/home'} variant="success">
                   Ir a mi Panel
                 </Button>
               ) : (

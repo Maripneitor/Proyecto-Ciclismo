@@ -1,7 +1,8 @@
 // src/pages/LoginPage.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth'; // <-- CORRECCIÓN: Importa el hook correcto
+import { useNotification } from '../contexts/NotificationContext'; // <-- AÑADIDO: Importa el hook de notificaciones
 import './AuthStyles.css';
 
 function LoginPage() {
@@ -9,21 +10,23 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useAuth();
+  const { addNotification } = useNotification(); // <-- AÑADIDO: Obtiene la función para notificar
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const user = login(email, password);
 
     if (user) {
+      // CORRECCIÓN: Usa la notificación en lugar de alert()
+      addNotification(`¡Bienvenido, ${user.name}!`, 'success');
       if (user.role === 'organizer') {
-        alert(`¡Bienvenido, ${user.name}!`);
         navigate('/organizer/dashboard');
       } else {
-        alert(`¡Bienvenido, ${user.name}!`);
         navigate('/user/home');
       }
     } else {
-      alert('Correo o contraseña incorrectos.');
+      // CORRECCIÓN: Usa la notificación para el error
+      addNotification('Correo o contraseña incorrectos.', 'error');
     }
   };
 
