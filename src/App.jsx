@@ -11,8 +11,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 
 // --- Importaciones Dinámicas (Lazy Loading) ---
-const PublicLayout = lazy(() => import('./layouts/PublicLayout')); // <-- AÑADIDO
+const PublicLayout = lazy(() => import('./layouts/PublicLayout'));
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
+const CategoryPage = lazy(() => import('./pages/CategoryPage')); // <-- NUEVA PÁGINA
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
 const OrganizerLayout = lazy(() => import('./layouts/OrganizerLayout'));
@@ -49,6 +50,7 @@ function App() {
                   {/* --- RUTAS PÚBLICAS CON LAYOUT --- */}
                   <Route element={<PublicLayout />}>
                     <Route path="/" element={<HomePage />} />
+                    <Route path="/category/:categoryName" element={<CategoryPage />} /> {/* <-- NUEVA RUTA */}
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                   </Route>

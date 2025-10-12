@@ -3,7 +3,6 @@ import React from 'react';
 import { Outlet, Link, NavLink } from 'react-router-dom';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import styles from './PublicLayout.module.css';
-// CORRECCIÓN: La importación ahora apunta a la carpeta de hooks
 import { useAuth } from '../hooks/useAuth';
 
 const PublicLayout = () => {
@@ -21,7 +20,7 @@ const PublicLayout = () => {
           <Navbar.Collapse id="public-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link as={NavLink} to="/" end>Inicio</Nav.Link>
-              <Nav.Link as={NavLink} to="/events-list">Eventos</Nav.Link>
+              <Nav.Link as={NavLink} to="/user/events">Eventos</Nav.Link> {/* <-- RUTA CORREGIDA */}
             </Nav>
             <Nav>
               {currentUser ? (
