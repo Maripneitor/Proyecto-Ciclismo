@@ -1,19 +1,14 @@
 // src/pages/UserEventsPage.jsx
 import React, { useState, useCallback, useMemo } from 'react';
-import EventCard from '../components/EventCard'; // Importamos el componente optimizado
-import { useNotification } from '../contexts/NotificationContext'; // Para notificaciones
-
-const initialEvents = [
-    { id: 1, name: 'Carrera del Bosque', date: '2025-10-10', description: 'Una carrera escénica a través del bosque.', distance: 10, type: 'Femenil' },
-    { id: 2, name: 'Reto de Montaña', date: '2025-11-05', description: 'Conquista las cimas más altas.', distance: 25, type: 'Varonil' },
-    { id: 3, name: 'Tour de la Ciudad', date: '2025-11-20', description: 'Recorre los puntos más icónicos.', distance: 15, type: 'Mixto' }
-];
+import EventCard from '../components/EventCard';
+import { useNotification } from '../contexts/NotificationContext';
+import { useEvents } from '../hooks/useEvents'; // ¡Importamos el hook de eventos!
 
 function UserEventsPage() {
-  const [registeredEvents, setRegisteredEvents] = useState([2]); 
+  const { events } = useEvents(); // <-- Usamos los eventos del contexto
+  const [registeredEvents, setRegisteredEvents] = useState([2]); // Simulación de eventos inscritos
   const { addNotification } = useNotification();
 
-  // useCallback evita que la función se recree en cada render, optimizando los componentes hijos.
   const handleRegister = useCallback((eventId) => {
     let isRegistering = true;
     setRegisteredEvents(prevRegistered => {
@@ -25,22 +20,20 @@ function UserEventsPage() {
       }
     });
     
-    if (isRegistering) {
-      addNotification('¡Te has inscrito al evento!', 'success');
-    } else {
-      addNotification('Has anulado tu inscripción.', 'info');
-    }
+    addNotification(
+      isRegistering ? '¡Te has inscrito al evento!' : 'Has anulado tu inscripción.',
+      isRegistering ? 'success' : 'info'
+    );
   }, [addNotification]);
 
-  // useMemo optimiza el cálculo de las listas, solo se recalculan si los eventos registrados cambian.
   const upcomingEvents = useMemo(() => 
-    initialEvents.filter(event => !registeredEvents.includes(event.id)),
-    [registeredEvents]
+    events.filter(event => !registeredEvents.includes(event.id)),
+    [events, registeredEvents]
   );
   
   const myEvents = useMemo(() => 
-    initialEvents.filter(event => registeredEvents.includes(event.id)),
-    [registeredEvents]
+    events.filter(event => registeredEvents.includes(event.id)),
+    [events, registeredEvents]
   );
 
   return (
