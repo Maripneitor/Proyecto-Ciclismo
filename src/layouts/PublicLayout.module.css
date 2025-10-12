@@ -1,0 +1,18 @@
+/* src/layouts/PublicLayout.module.css */
+.publicLayout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mainContent {
+  flex-grow: 1; /* Hace que el contenido principal ocupe todo el espacio disponible */
+}
+
+.footer {
+  background-color: #343a40; /* Color oscuro para el pie de página */
+  color: white;
+  padding: 1.5rem 0;
+  text-align: center;
+  margin-top: auto; /* Empuja el footer al final de la página */
+}

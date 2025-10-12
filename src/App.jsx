@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 
 // --- Importaciones Dinámicas (Lazy Loading) ---
+const PublicLayout = lazy(() => import('./layouts/PublicLayout')); // <-- AÑADIDO
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
@@ -26,7 +27,7 @@ const UserEventsPage = lazy(() => import('./pages/UserEventsPage'));
 const RouteDetailPage = lazy(() => import('./pages/RouteDetailPage'));
 const UserNotificationsPage = lazy(() => import('./pages/UserNotificationsPage'));
 
-// Componente de carga para mostrar mientras se descarga el código de la página
+// Componente de carga
 const LoadingFallback = () => (
   <div className="vh-100 d-flex justify-content-center align-items-center">
     <div className="spinner-border text-success" role="status" style={{ width: '3rem', height: '3rem' }}>
@@ -42,17 +43,15 @@ function App() {
         <AuthProvider>
           <EventProvider>
             <NotificationProvider>
-              
               <Notifications />
-              
               <Suspense fallback={<LoadingFallback />}>
                 <Routes>
-                  {/* --- RUTA PRINCIPAL --- */}
-                  <Route path="/" element={<HomePage />} />
-
-                  {/* Rutas Públicas */}
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/register" element={<RegisterPage />} />
+                  {/* --- RUTAS PÚBLICAS CON LAYOUT --- */}
+                  <Route element={<PublicLayout />}>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                  </Route>
 
                   {/* Rutas Protegidas del Organizador */}
                   <Route element={<ProtectedRoute allowedRoles={['organizer']} />}>
@@ -77,11 +76,9 @@ function App() {
                     </Route>
                   </Route>
                   
-                  {/* Redirección final si no coincide nada */}
                   <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
               </Suspense>
-
             </NotificationProvider>
           </EventProvider>
         </AuthProvider>

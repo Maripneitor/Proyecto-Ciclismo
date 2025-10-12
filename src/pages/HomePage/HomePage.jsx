@@ -5,7 +5,7 @@ import HeroSection from '../../components/HomePage/HeroSection';
 import EventFinder from '../../components/HomePage/EventFinder';
 import FeaturedEvents from '../../components/HomePage/FeaturedEvents';
 import SportCategories from '../../components/HomePage/SportCategories';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth'; // <-- CORRECCIÓN AQUÍ
 import styles from './HomePage.module.css';
 
 // Carga diferida para componentes que no son críticos en el primer render

@@ -3,8 +3,8 @@ import React from 'react';
 import { Outlet, Link, NavLink } from 'react-router-dom';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import styles from './PublicLayout.module.css';
-// CORRECCIÓN: La importación apunta a la carpeta de hooks
-import { useAuth } from '../contexts/AuthContext';
+// CORRECCIÓN: La importación ahora apunta a la carpeta de hooks
+import { useAuth } from '../hooks/useAuth';
 
 const PublicLayout = () => {
   const { currentUser } = useAuth();
@@ -53,4 +53,3 @@ const PublicLayout = () => {
 };
 
 export default PublicLayout;
-

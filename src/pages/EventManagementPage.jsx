@@ -2,16 +2,15 @@
 import React, { useState, useCallback } from 'react';
 import { useEvents } from "../hooks/useEvents";
 import EventForm from '../components/EventManagement/EventForm';
-import EventList from '../components/EventManagement/EventList';
+import EventList from '../components/EventManagement/EventList'; // <-- AÑADIDO
 import { useNotification } from '../contexts/NotificationContext';
-import { Modal, Button } from 'react-bootstrap'; // Importar Modal y Button
+import { Modal, Button } from 'react-bootstrap';
 
 const emptyFormState = { id: null, name: '', date: '', description: '', distance: '', type: 'Mixto' };
 
 function EventManagementPage() {
   const { events, addEvent, updateEvent, deleteEvent } = useEvents();
   const { addNotification } = useNotification();
-
   const [formData, setFormData] = useState(emptyFormState);
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -56,9 +55,6 @@ function EventManagementPage() {
 
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        {/* ... */}
-      </div>
       <div className="row">
         <div className="col-lg-7">
           <div className="card">
@@ -78,11 +74,23 @@ function EventManagementPage() {
           </div>
         </div>
         <div className="col-lg-5">
-            {/* ... */}
+            {/* --- SECCIÓN AÑADIDA --- */}
+            <div className="card">
+                <div className="card-header">
+                    Eventos Existentes
+                </div>
+                <div className="card-body">
+                    <EventList
+                        events={events}
+                        selectedId={formData.id}
+                        onSelectEvent={handleSelectEvent}
+                    />
+                </div>
+            </div>
+            {/* --- FIN SECCIÓN AÑADIDA --- */}
         </div>
       </div>
 
-      {/* Modal de Confirmación para Eliminar */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirmar Eliminación</Modal.Title>

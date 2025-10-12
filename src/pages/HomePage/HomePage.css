@@ -1,0 +1,40 @@
+/* src/pages/HomePage/HomePage.css */
+.homepage-container {
+  background-color: #f8f9fa; /* Un fondo ligeramente gris */
+}
+
+.main-container {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+/* Espaciado entre secciones */
+.homepage-container section {
+  padding: 60px 0;
+}
+
+.homepage-container section:nth-child(even) {
+  background-color: #ffffff; /* Fondo blanco para secciones pares */
+}
+
+/* Títulos de sección */
+.homepage-container h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+/* Línea decorativa debajo de los títulos */
+.homepage-container h2::after {
+  content: '';
+  width: 80px;
+  height: 4px;
+  background-color: #007bff;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -15px;
+  border-radius: 2px;
+}

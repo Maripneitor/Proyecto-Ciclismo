@@ -1,9 +1,8 @@
 // src/contexts/AuthContext.jsx
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const AuthContext = createContext();
-
+export const AuthContext = createContext(); // <-- AÑADE "export" AQUÍ
 
 export const AuthProvider = ({ children }) => {
     // 1. Al iniciar, intenta leer el usuario desde el localStorage.

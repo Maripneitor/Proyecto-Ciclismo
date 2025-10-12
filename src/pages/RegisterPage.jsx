@@ -1,7 +1,6 @@
 // src/pages/RegisterPage.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-// import AuthLogo from '../components/AuthLogo'; // <-- 1. Eliminamos esta línea
 import './AuthStyles.css';
 
 function RegisterPage() {
@@ -33,7 +32,6 @@ function RegisterPage() {
       <div className="container">
         <div className="auth-container">
           <div className="auth-sidebar">
-            {/* 2. Reemplazamos el componente AuthLogo con tu imagen */}
             <div className="text-center">
               <img src="/Logo.svg" alt="Ciclomex Logo" width="120" />
               <h1 className="text-white mt-2">Ciclomex</h1>
