@@ -1,0 +1,25 @@
+/* src/components/HomePage/Testimonials.module.css */
+.testimonialsSection {
+  padding: var(--spacing-xl) 0;
+}
+
+.testimonialItem {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  text-align: center;
+}
+
+.testimonialText {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--color-dark);
+}
+
+@media (max-width: 768px) {
+    .testimonialsSection {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .testimonialsSection .row {
+        flex-direction: column-reverse; /* Pone el texto arriba en móvil */
+    }
+}

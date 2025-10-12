@@ -8,9 +8,10 @@ import { EventProvider } from './contexts/EventContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import Notifications from './components/Notifications';
 import ProtectedRoute from './components/ProtectedRoute';
-import ErrorBoundary from './components/ErrorBoundary'; // Importamos el Error Boundary
+import ErrorBoundary from './components/ErrorBoundary';
 
 // --- Importaciones Dinámicas (Lazy Loading) ---
+const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
 const OrganizerLayout = lazy(() => import('./layouts/OrganizerLayout'));
@@ -46,6 +47,9 @@ function App() {
               
               <Suspense fallback={<LoadingFallback />}>
                 <Routes>
+                  {/* --- RUTA PRINCIPAL --- */}
+                  <Route path="/" element={<HomePage />} />
+
                   {/* Rutas Públicas */}
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
@@ -73,7 +77,7 @@ function App() {
                     </Route>
                   </Route>
                   
-                  <Route path="/" element={<Navigate to="/login" />} /> 
+                  {/* Redirección final si no coincide nada */}
                   <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
               </Suspense>

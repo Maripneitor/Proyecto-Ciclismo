@@ -1,0 +1,20 @@
+/* src/components/HomePage/HeroSection.module.css */
+.heroCarousel .carouselImage {
+  height: 60vh;
+  object-fit: cover;
+  filter: brightness(0.6);
+}
+
+.carouselCaption {
+  bottom: 20%;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+@media (max-width: 768px) {
+  .heroCarousel .carouselImage {
+    height: 50vh;
+  }
+  .carouselCaption h3 {
+    font-size: 1.5rem;
+  }
+}

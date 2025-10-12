@@ -1,0 +1,28 @@
+/* src/styles/designTokens.css */
+:root {
+  /* Colores Base */
+  --color-primary: #007bff;
+  --color-secondary: #ffc107;
+  --color-dark: #343a40;
+  --color-light: #f8f9fa;
+  --color-white: #ffffff;
+  --color-success: #28a745;
+
+  /* Tipografía */
+  --font-family-headings: 'Poppins', sans-serif;
+  --font-family-body: 'Roboto', sans-serif;
+  --font-size-base: 16px;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+
+  /* Espaciado */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 3rem;
+
+  /* Bordes */
+  --border-radius: 0.5rem;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,6 @@
+/* src/components/HomePage/UserStats.module.css */
+.statsContainer {
+  background-color: var(--color-light);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius);
+}

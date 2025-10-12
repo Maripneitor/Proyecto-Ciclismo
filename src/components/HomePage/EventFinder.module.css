@@ -1,0 +1,66 @@
+/* src/components/HomePage/EventFinder.module.css */
+.finderContainer {
+  padding: var(--spacing-lg);
+  background-color: var(--color-white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #e9ecef;
+  margin-top: -80px; /* Sube el buscador para que se superponga con el Hero */
+  position: relative;
+  z-index: 10;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1020; /* Asegura que esté por encima de otros elementos */
+  width: 100%;
+  border-radius: 0;
+  padding: var(--spacing-sm) var(--spacing-xl);
+  margin-top: 0;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Estilos para los inputs dentro del buscador */
+.finderContainer .form-control,
+.finderContainer .form-select {
+  border-radius: var(--border-radius);
+}
+
+.finderContainer .btn {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .finderContainer {
+    margin-top: -40px;
+    padding: var(--spacing-md);
+  }
+  
+  .sticky {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  /* Hace que los filtros se apilen verticalmente en móvil */
+  .finderContainer .row > * {
+    margin-bottom: var(--spacing-sm);
+  }
+  .finderContainer .row > *:last-child {
+    margin-bottom: 0;
+  }
+}
