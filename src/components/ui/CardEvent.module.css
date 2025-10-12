@@ -1,0 +1,94 @@
+/* src/components/ui/CardEvent.module.css */
+.card {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  will-change: transform, box-shadow; /* Optimización */
+  transition: box-shadow var(--transition-fast);
+}
+.card:hover, .card:focus-within {
+  box-shadow: var(--box-shadow-hover);
+}
+
+.imageContainer {
+  position: relative;
+}
+.imageContainer img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.badgeWrapper {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+}
+
+.content {
+  padding: var(--spacing-lg);
+}
+
+.date {
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.title {
+  font-family: var(--font-heading-sport);
+  font-size: 1.5rem;
+  margin: 0.25rem 0 0.5rem;
+}
+
+.description {
+  font-family: var(--font-body-readable);
+  color: #495057;
+  margin-bottom: 1.5rem;
+  /* Truncate text in list view */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* --- LIST VIEW --- */
+.list {
+  display: flex;
+  align-items: center;
+}
+.list .imageContainer {
+  width: 250px;
+  flex-shrink: 0;
+}
+.list .imageContainer img {
+    height: 100%;
+}
+.list .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.list .description {
+    flex-grow: 1;
+}
+
+@media (max-width: 768px) {
+    .list {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .list .imageContainer {
+        width: 100%;
+        height: 200px;
+    }
+}
+

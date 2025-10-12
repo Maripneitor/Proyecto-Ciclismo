@@ -13,7 +13,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 // --- Importaciones Dinámicas (Lazy Loading) ---
 const PublicLayout = lazy(() => import('./layouts/PublicLayout'));
 const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
-const CategoryPage = lazy(() => import('./pages/CategoryPage')); // <-- NUEVA PÁGINA
+const CategoryPage = lazy(() => import('./pages/CategoryPage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/RegisterPage'));
 const OrganizerLayout = lazy(() => import('./layouts/OrganizerLayout'));
@@ -27,6 +27,7 @@ const UserProfilePage = lazy(() => import('./pages/UserProfilePage'));
 const UserEventsPage = lazy(() => import('./pages/UserEventsPage'));
 const RouteDetailPage = lazy(() => import('./pages/RouteDetailPage'));
 const UserNotificationsPage = lazy(() => import('./pages/UserNotificationsPage'));
+const DesignSystemShowcase = lazy(() => import('./pages/DesignSystemShowcase')); // <-- NUEVA PÁGINA
 
 // Componente de carga
 const LoadingFallback = () => (
@@ -47,10 +48,13 @@ function App() {
               <Notifications />
               <Suspense fallback={<LoadingFallback />}>
                 <Routes>
+                  {/* --- RUTA DE DEMO --- */}
+                  <Route path="/design-system" element={<DesignSystemShowcase />} />
+
                   {/* --- RUTAS PÚBLICAS CON LAYOUT --- */}
                   <Route element={<PublicLayout />}>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/category/:categoryName" element={<CategoryPage />} /> {/* <-- NUEVA RUTA */}
+                    <Route path="/category/:categoryName" element={<CategoryPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                   </Route>
@@ -90,3 +94,4 @@ function App() {
 }
 
 export default App;
+

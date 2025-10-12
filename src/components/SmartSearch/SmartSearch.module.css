@@ -1,0 +1,32 @@
+/* src/components/SmartSearch/SmartSearch.module.css */
+.smartSearchContainer {
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.suggestionsList {
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 8px 8px;
+}
+
+.historyBadge {
+  cursor: pointer;
+  padding: 0.5em 1em;
+  margin-right: 0.5em;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.historyBadge:hover {
+  background-color: #e2e6ea !important;
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
