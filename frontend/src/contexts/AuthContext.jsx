@@ -1,68 +1,63 @@
-// src/contexts/AuthContext.jsx
-import React, { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// ruta: frontend/src/contexts/AuthContext.jsx
 
-export const AuthContext = createContext(); // <-- AÑADE "export" AQUÍ
+import { createContext, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    // 1. Al iniciar, intenta leer el usuario desde el localStorage.
-    const [currentUser, setCurrentUser] = useState(() => {
-        try {
-            const user = localStorage.getItem('currentUser');
-            return user ? JSON.parse(user) : null;
-        } catch (error) {
-            console.error("Error al leer localStorage", error);
-            return null;
-        }
-    });
-    
-    const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // Mantenemos el estado de carga para los componentes que lo necesiten
 
-    // 2. Cada vez que el usuario cambie (login/logout/update), lo guarda en localStorage.
-    useEffect(() => {
-        if (currentUser) {
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        } else {
-            localStorage.removeItem('currentUser');
-        }
-    }, [currentUser]);
+  // Cargar usuario desde localStorage al iniciar la app
+  useEffect(() => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (error) {
+      console.error("Error al leer el usuario de localStorage", error);
+      // Si hay un error, limpiamos para evitar problemas futuros
+      localStorage.removeItem('user');
+    } finally {
+      // Indicamos que la carga inicial ha terminado
+      setLoading(false);
+    }
+  }, []);
 
-    // Simulación de una base de datos de usuarios
-    const users = [
-        { id: 1, email: 'user@test.com', password: 'password123', name: 'Juan Ciclista', role: 'user' },
-        { id: 2, email: 'admin@test.com', password: 'password123', name: 'Mario Organizador', role: 'organizer' }
-    ];
-
-    const login = (email, password) => {
-        const user = users.find(u => u.email === email && u.password === password);
-        if (user) {
-            setCurrentUser(user);
-            return user;
-        }
-        return null;
+  const login = (userData) => {
+    const fullUserData = {
+      ...userData,
+      role: userData.role || 'user',
     };
+    localStorage.setItem('user', JSON.stringify(fullUserData));
+    setUser(fullUserData);
+  };
 
-    const logout = () => {
-        setCurrentUser(null); // Esto dispara el useEffect para limpiar localStorage
-        navigate('/login');
-    };
+  const logout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    // Redirigimos de forma más suave sin recargar toda la página
+    window.location.href = '/login';
+  };
 
-    const updateUser = (updatedData) => {
-        if (currentUser) {
-            setCurrentUser(prevUser => ({ ...prevUser, ...updatedData }));
-        }
-    };
+  const authContextValue = {
+    user,
+    loading,
+    login,
+    logout,
+  };
+  
+  // ¡Cambio importante! Ahora siempre renderizamos los `children`.
+  // Los componentes internos usarán el estado `loading` para saber si mostrar un spinner o el contenido.
+  return (
+    <AuthContext.Provider value={authContextValue}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
-    const value = {
-        currentUser,
-        login,
-        logout,
-        updateUser
-    };
-
-    return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
-    );
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };

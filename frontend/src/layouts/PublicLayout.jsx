@@ -1,41 +1,67 @@
-// src/layouts/PublicLayout.jsx
-import React from 'react';
-import { Outlet, Link, NavLink } from 'react-router-dom';
-import { Navbar, Container, Nav, Button } from 'react-bootstrap';
-import styles from './PublicLayout.module.css';
+// ruta: frontend/src/layouts/PublicLayout.jsx
+
+import { Outlet } from 'react-router-dom';
+import { Container, Navbar, Nav, Button, NavDropdown } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import { useAuth } from '../hooks/useAuth';
+import styles from './PublicLayout.module.css';
+import logo from '/Logo.svg'; // Asegúrate que tu logo esté en la carpeta /public
 
 const PublicLayout = () => {
-  const { currentUser } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <div className={styles.publicLayout}>
-      <Navbar bg="light" expand="lg" className="shadow-sm" sticky="top">
+      <Navbar expand="lg" className={styles.navbar} fixed="top" bg="light" variant="light">
         <Container>
-          <Navbar.Brand as={Link} to="/" className="fw-bold d-flex align-items-center">
-            <img src="/Logo.svg" alt="Ciclomex Logo" height="30" className="me-2" />
-            Ciclomex
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="public-navbar-nav" />
-          <Navbar.Collapse id="public-navbar-nav">
+          <LinkContainer to="/">
+            <Navbar.Brand>
+              <img
+                src={logo}
+                width="120"
+                height="30"
+                className="d-inline-block align-top"
+                alt="CicloMex logo"
+              />
+            </Navbar.Brand>
+          </LinkContainer>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link as={NavLink} to="/" end>Inicio</Nav.Link>
-              {/* MEJORA: Este enlace ahora solo aparece si eres un usuario logueado */}
-              {currentUser?.role === 'user' && (
-                <Nav.Link as={NavLink} to="/user/events">Eventos</Nav.Link>
-              )}
+              <LinkContainer to="/">
+                <Nav.Link>Inicio</Nav.Link>
+              </LinkContainer>
+              {/* Aquí puedes agregar enlaces a futuras páginas como "Eventos" o "Comunidad" */}
             </Nav>
             <Nav>
-              {currentUser ? (
-                // --- CORRECCIÓN CLAVE AQUÍ ---
-                // Ahora navegamos directamente a la página del panel para evitar la doble redirección.
-                <Button as={Link} to={currentUser.role === 'organizer' ? '/organizer/dashboard' : '/user/home'} variant="success">
-                  Ir a mi Panel
-                </Button>
+              {user ? (
+                <NavDropdown title={`Hola, ${user.name || 'Usuario'}`} id="basic-nav-dropdown">
+                  <LinkContainer to="/user/home">
+                    <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/user/events">
+                    <NavDropdown.Item>Mis Eventos</NavDropdown.Item>
+                  </LinkContainer>
+                  {user.role === 'organizer' && (
+                     <LinkContainer to="/organizer/dashboard">
+                        <NavDropdown.Item>Panel de Organizador</NavDropdown.Item>
+                     </LinkContainer>
+                  )}
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={logout}>
+                    Cerrar Sesión
+                  </NavDropdown.Item>
+                </NavDropdown>
               ) : (
                 <>
-                  <Button as={Link} to="/login" variant="outline-primary" className="me-2">Iniciar Sesión</Button>
-                  <Button as={Link} to="/register" variant="primary">Registrarse</Button>
+                  <LinkContainer to="/login">
+                    <Button variant="outline-primary" className="me-2 mb-2 mb-lg-0">
+                      Iniciar Sesión
+                    </Button>
+                  </LinkContainer>
+                  <LinkContainer to="/register">
+                    <Button variant="primary">Registrarse</Button>
+                  </LinkContainer>
                 </>
               )}
             </Nav>
@@ -49,7 +75,7 @@ const PublicLayout = () => {
 
       <footer className={styles.footer}>
         <Container>
-          <p>&copy; {new Date().getFullYear()} Ciclomex. Todos los derechos reservados.</p>
+          <p>&copy; 2024 CicloMex. Todos los derechos reservados.</p>
         </Container>
       </footer>
     </div>
