@@ -1,14 +1,14 @@
-// src/main.jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import App from './App.jsx';
-import './Theme.css';
+import { NotificationProvider } from './contexts/NotificationContext'; // <-- 1. IMPORTA EL PROVIDER
 
-// Ahora, este archivo solo renderiza el componente principal 'App'.
-// Toda la configuración de Router y Contextos se hará dentro de App.jsx.
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <NotificationProvider> {/* <-- 2. ENVUELVE TU APP */}
+      <App />
+    </NotificationProvider>
+  </React.StrictMode>,
+)

@@ -1,27 +1,31 @@
-// ruta: frontend/src/layouts/PublicLayout.jsx
-
-import { Outlet } from 'react-router-dom';
-import { Container, Navbar, Nav, Button, NavDropdown } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import { useAuth } from '../hooks/useAuth';
-import styles from './PublicLayout.module.css';
-import logo from '/Logo.svg'; // Asegúrate que tu logo esté en la carpeta /public
+import React from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { Container, Navbar, Nav, Button, NavDropdown } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
+import { useAuth } from "../contexts/AuthContext"; // <-- LÍNEA CORREGIDA
+import styles from "./PublicLayout.module.css";
+import logo from "/Logo.svg";
 
 const PublicLayout = () => {
-  const { user, logout } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
-    <div className={styles.publicLayout}>
-      <Navbar expand="lg" className={styles.navbar} fixed="top" bg="light" variant="light">
+    <div className={styles.layout}>
+      <Navbar bg="light" expand="lg" sticky="top" className={styles.navbar}>
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>
               <img
                 src={logo}
-                width="120"
                 height="30"
                 className="d-inline-block align-top"
-                alt="CicloMex logo"
+                alt="Logo"
               />
             </Navbar.Brand>
           </LinkContainer>
@@ -31,36 +35,39 @@ const PublicLayout = () => {
               <LinkContainer to="/">
                 <Nav.Link>Inicio</Nav.Link>
               </LinkContainer>
-              {/* Aquí puedes agregar enlaces a futuras páginas como "Eventos" o "Comunidad" */}
+              <LinkContainer to="/events">
+                <Nav.Link>Eventos</Nav.Link>
+              </LinkContainer>
             </Nav>
             <Nav>
-              {user ? (
-                <NavDropdown title={`Hola, ${user.name || 'Usuario'}`} id="basic-nav-dropdown">
-                  <LinkContainer to="/user/home">
+              {isAuthenticated ? (
+                <NavDropdown title={`Hola, ${user?.nombre || 'Usuario'}`} id="basic-nav-dropdown">
+                  <LinkContainer to="/profile">
                     <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to="/user/events">
-                    <NavDropdown.Item>Mis Eventos</NavDropdown.Item>
-                  </LinkContainer>
-                  {user.role === 'organizer' && (
+                  {user?.rol === 'organizador' && (
                      <LinkContainer to="/organizer/dashboard">
-                        <NavDropdown.Item>Panel de Organizador</NavDropdown.Item>
+                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
                      </LinkContainer>
                   )}
                   <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={logout}>
+                  <NavDropdown.Item onClick={handleLogout}>
                     Cerrar Sesión
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
                 <>
                   <LinkContainer to="/login">
-                    <Button variant="outline-primary" className="me-2 mb-2 mb-lg-0">
-                      Iniciar Sesión
-                    </Button>
+                    <Nav.Link>
+                      <Button variant="outline-primary" className="me-2">
+                        Iniciar Sesión
+                      </Button>
+                    </Nav.Link>
                   </LinkContainer>
                   <LinkContainer to="/register">
-                    <Button variant="primary">Registrarse</Button>
+                    <Nav.Link>
+                      <Button variant="primary">Registrarse</Button>
+                    </Nav.Link>
                   </LinkContainer>
                 </>
               )}
@@ -68,16 +75,9 @@ const PublicLayout = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-
       <main className={styles.mainContent}>
         <Outlet />
       </main>
-
-      <footer className={styles.footer}>
-        <Container>
-          <p>&copy; 2024 CicloMex. Todos los derechos reservados.</p>
-        </Container>
-      </footer>
     </div>
   );
 };

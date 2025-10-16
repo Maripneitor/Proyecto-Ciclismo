@@ -1,32 +1,68 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import ButtonSport from '../components/ui/ButtonSport';
+import { useAuth } from '../contexts/AuthContext';
+import apiClient from '../services/api'; // Importamos nuestro cliente de API
+import './AuthStyles.css';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const { login } = useAuth();
+  const [email, setEmail] = useState('');
+  const [contrasena, setContrasena] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
-      login(response.data.token, response.data.role);
-      navigate('/');
-    } catch (error) {
-      console.error('Login failed:', error);
+      const response = await apiClient.post('/auth/login', {
+        email,
+        contrasena,
+      });
+
+      const { token, usuario } = response.data;
+      login(token, usuario); // Guardamos el token y los datos del usuario en el contexto
+      
+      // Redirigir según el rol del usuario
+      if (usuario.rol === 'organizador') {
+        navigate('/organizer/dashboard');
+      } else {
+        navigate('/user/home');
+      }
+
+    } catch (err) {
+      setError(err.response?.data?.error || 'No se pudo iniciar sesión. Inténtalo de nuevo.');
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-      <ButtonSport type="submit">Login</ButtonSport>
-    </form>
+    <div className="auth-container">
+      <form onSubmit={handleSubmit} className="auth-form">
+        <h2>Iniciar Sesión</h2>
+        {error && <p className="error-message">{error}</p>}
+        <div className="input-group">
+          <label htmlFor="email">Correo Electrónico</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="password">Contraseña</label>
+          <input
+            type="password"
+            id="password"
+            value={contrasena}
+            onChange={(e) => setContrasena(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit" className="auth-button">Ingresar</button>
+      </form>
+    </div>
   );
 };
 
