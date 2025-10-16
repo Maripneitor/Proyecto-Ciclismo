@@ -1,84 +1,94 @@
-const bcrypt = require('bcrypt');
+const { Usuario } = require('../models');
 const jwt = require('jsonwebtoken');
-const { Usuario } = require('../models'); // Importamos desde el index de modelos
+const bcrypt = require('bcryptjs');
 
-// Registro de un nuevo usuario
-exports.register = async (req, res) => {
+// @desc    Registrar un nuevo usuario
+// @route   POST /api/auth/register
+// @access  Public
+const registerUser = async (req, res) => {
   try {
-    const { nombre_completo, email, contrasena, rol } = req.body;
+    const { name, email, password, role } = req.body;
 
-    // Validaciones básicas
-    if (!nombre_completo || !email || !contrasena) {
-      return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Por favor, incluye nombre, email y contraseña' });
     }
 
-    // Hashear la contraseña antes de guardarla
-    const hashedPassword = await bcrypt.hash(contrasena, 12); // Aumentamos el salt a 12 para mayor seguridad
+    const userExists = await Usuario.findOne({ where: { email } });
 
-    const nuevoUsuario = await Usuario.create({
-      nombre_completo,
+    if (userExists) {
+      return res.status(400).json({ message: 'El usuario ya existe' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const password_hash = await bcrypt.hash(password, salt);
+
+    const user = await Usuario.create({
+      name,
       email,
-      contrasena: hashedPassword,
-      rol: rol || 'usuario', // Rol por defecto es 'usuario'
+      password_hash,
+      role: role || 'usuario',
     });
 
-    res.status(201).json({
-      message: 'Usuario creado exitosamente.',
-      usuario: {
-        usuario_id: nuevoUsuario.usuario_id,
-        email: nuevoUsuario.email,
-        rol: nuevoUsuario.rol,
-      },
-    });
-  } catch (error) {
-    // Manejo de errores específicos (ej. email duplicado)
-    if (error.name === 'SequelizeUniqueConstraintError') {
-      return res.status(409).json({ error: 'El correo electrónico ya está registrado.' });
+    if (user) {
+      res.status(201).json({
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        token: generateToken(user.id, user.email, user.role),
+      });
+    } else {
+      res.status(400).json({ message: 'Datos de usuario inválidos' });
     }
-    console.error('Error en el registro:', error);
-    res.status(500).json({ error: 'Ocurrió un error inesperado en el servidor.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error en el servidor', error: error.message });
   }
 };
 
-// Inicio de sesión
-exports.login = async (req, res) => {
+// @desc    Autenticar un usuario
+// @route   POST /api/auth/login
+// @access  Public
+const loginUser = async (req, res) => {
   try {
-    const { email, contrasena } = req.body;
+    const { email, password } = req.body;
+    const user = await Usuario.findOne({ where: { email } });
 
-    if (!email || !contrasena) {
-      return res.status(400).json({ error: 'El email y la contraseña son obligatorios.' });
+    // --- LA CORRECCIÓN ESTÁ AQUÍ ---
+    // Cambiamos user.password por user.password_hash
+    if (user && (await bcrypt.compare(password, user.password_hash))) {
+      res.json({
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        token: generateToken(user.id, user.email, user.role),
+      });
+    } else {
+      res.status(401).json({ message: 'Credenciales inválidas' });
     }
-
-    const usuario = await Usuario.findOne({ where: { email } });
-
-    // Verificar si el usuario existe y si la contraseña es correcta
-    if (!usuario || !(await bcrypt.compare(contrasena, usuario.contrasena))) {
-      return res.status(401).json({ error: 'Credenciales inválidas.' });
-    }
-
-    // Generar el token JWT
-    const token = jwt.sign(
-      {
-        userId: usuario.usuario_id,
-        rol: usuario.rol,
-        nombre: usuario.nombre_completo,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '8h' } // Token válido por 8 horas
-    );
-
-    res.json({
-      message: 'Inicio de sesión exitoso.',
-      token,
-      usuario: {
-        usuario_id: usuario.usuario_id,
-        nombre: usuario.nombre_completo,
-        email: usuario.email,
-        rol: usuario.rol,
-      },
-    });
   } catch (error) {
-    console.error('Error en el login:', error);
-    res.status(500).json({ error: 'Ocurrió un error inesperado en el servidor.' });
+    res.status(500).json({ message: 'Error en el servidor', error: error.message });
   }
+};
+
+
+// @desc    Obtener datos del usuario
+// @route   GET /api/auth/me
+// @access  Private
+const getMe = async (req, res) => {
+  // req.user es establecido por el middleware de protección
+  res.status(200).json(req.user);
+};
+
+// Generar Token JWT
+const generateToken = (id, email, role) => {
+  return jwt.sign({ id, email, role }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  });
+};
+
+module.exports = {
+  registerUser,
+  loginUser,
+  getMe,
 };

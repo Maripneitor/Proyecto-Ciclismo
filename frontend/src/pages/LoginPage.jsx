@@ -1,69 +1,73 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import apiClient from '../services/api'; // Importamos nuestro cliente de API
+import { Link } from 'react-router-dom';
+import { Form, Button, Container, Row, Col, Card, Alert, Spinner } from 'react-bootstrap';
 import './AuthStyles.css';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [contrasena, setContrasena] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
-  const { login } = useAuth();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const { login } = useAuth();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    try {
-      const response = await apiClient.post('/auth/login', {
-        email,
-        contrasena,
-      });
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError('');
+        setLoading(true);
+        try {
+            await login(email, password);
+            // La redirección ahora la maneja el AuthContext
+        } catch (err) {
+            setError('Error al iniciar sesión. Verifica tus credenciales.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-      const { token, usuario } = response.data;
-      login(token, usuario); // Guardamos el token y los datos del usuario en el contexto
-      
-      // Redirigir según el rol del usuario
-      if (usuario.rol === 'organizador') {
-        navigate('/organizer/dashboard');
-      } else {
-        navigate('/user/home');
-      }
+    return (
+        <Container className="auth-container">
+            <Row className="justify-content-md-center">
+                <Col md={6} lg={5}>
+                    <Card className="p-4 shadow-sm">
+                        <h2 className="text-center mb-4">Iniciar Sesión</h2>
+                        {error && <Alert variant="danger">{error}</Alert>}
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Form.Label>Correo Electrónico</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    placeholder="Ingresa tu correo"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    disabled={loading}
+                                />
+                            </Form.Group>
 
-    } catch (err) {
-      setError(err.response?.data?.error || 'No se pudo iniciar sesión. Inténtalo de nuevo.');
-    }
-  };
-
-  return (
-    <div className="auth-container">
-      <form onSubmit={handleSubmit} className="auth-form">
-        <h2>Iniciar Sesión</h2>
-        {error && <p className="error-message">{error}</p>}
-        <div className="input-group">
-          <label htmlFor="email">Correo Electrónico</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label htmlFor="password">Contraseña</label>
-          <input
-            type="password"
-            id="password"
-            value={contrasena}
-            onChange={(e) => setContrasena(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="auth-button">Ingresar</button>
-      </form>
-    </div>
-  );
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Contraseña</Form.Label>
+                                <Form.Control
+                                    type="password"
+                                    placeholder="Contraseña"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                    disabled={loading}
+                                />
+                            </Form.Group>
+                            <Button variant="primary" type="submit" className="w-100" disabled={loading}>
+                                {loading ? <Spinner as="span" animation="border" size="sm" /> : 'Entrar'}
+                            </Button>
+                        </Form>
+                        <div className="mt-3 text-center">
+                            ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
+                        </div>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
+    );
 };
 
 export default LoginPage;

@@ -1,85 +1,51 @@
-import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-import { Container, Navbar, Nav, Button, NavDropdown } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
-import styles from "./PublicLayout.module.css";
-import logo from "/Logo.svg";
+import React from 'react';
+import { Outlet, Link } from 'react-router-dom';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { useAuth } from '../contexts/AuthContext';
+import styles from './PublicLayout.module.css';
 
 const PublicLayout = () => {
-  const { isAuthenticated, user, logout } = useAuth();
-  const navigate = useNavigate();
+    const { currentUser, logout } = useAuth();
 
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
+    return (
+        <div className={styles.layout}>
+            <Navbar bg="dark" variant="dark" expand="lg" sticky="top" className={styles.navbar}>
+                <Container>
+                    <Navbar.Brand as={Link} to="/">CicloAventuras</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link as={Link} to="/">Inicio</Nav.Link>
+                            {/* Puedes añadir más enlaces aquí */}
+                        </Nav>
+                        <Nav>
+                            {currentUser ? (
+                                <>
+                                    <Nav.Link as={Link} to="/profile">Mi Perfil</Nav.Link>
+                                    <Button variant="outline-light" onClick={logout}>Cerrar Sesión</Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Nav.Link as={Link} to="/login">Iniciar Sesión</Nav.Link>
+                                    <Button as={Link} to="/register" variant="primary" className="ms-2">Registrarse</Button>
+                                </>
+                            )}
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
 
-  return (
-    <div className={styles.layout}>
-      <Navbar bg="white" expand="lg" sticky="top" className={styles.navbar} collapseOnSelect>
-        <Container>
-          <LinkContainer to="/">
-            <Navbar.Brand>
-              <img
-                src={logo}
-                height="35"
-                className="d-inline-block align-top"
-                alt="Logo Ciclismo"
-              />
-            </Navbar.Brand>
-          </LinkContainer>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <LinkContainer to="/">
-                <Nav.Link>Inicio</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/events">
-                <Nav.Link>Eventos</Nav.Link>
-              </LinkContainer>
-            </Nav>
-            <Nav>
-              {isAuthenticated ? (
-                <NavDropdown title={`Hola, ${user?.nombre_completo || user?.nombre || 'Usuario'}`} id="basic-nav-dropdown">
-                  <LinkContainer to="/profile">
-                    <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
-                  </LinkContainer>
-                  {user?.rol === 'organizador' && (
-                     <LinkContainer to="/organizer/dashboard">
-                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
-                     </LinkContainer>
-                  )}
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={handleLogout}>
-                    Cerrar Sesión
-                  </NavDropdown.Item>
-                </NavDropdown>
-              ) : (
-                <>
-                  <LinkContainer to="/login">
-                    <Nav.Link>
-                      <Button variant="outline-primary" className="me-2">
-                        Iniciar Sesión
-                      </Button>
-                    </Nav.Link>
-                  </LinkContainer>
-                  <LinkContainer to="/register">
-                    <Nav.Link>
-                      <Button variant="primary">Registrarse</Button>
-                    </Nav.Link>
-                  </LinkContainer>
-                </>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-      <main className={styles.mainContent}>
-        <Outlet />
-      </main>
-    </div>
-  );
+            <main className={styles.mainContent}>
+                <Outlet /> {/* Aquí se renderizarán las páginas anidadas */}
+            </main>
+
+            <footer className={styles.footer}>
+                <Container>
+                    <p>&copy; {new Date().getFullYear()} CicloAventuras. Todos los derechos reservados.</p>
+                </Container>
+            </footer>
+        </div>
+    );
 };
 
 export default PublicLayout;

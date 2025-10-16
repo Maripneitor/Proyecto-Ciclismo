@@ -1,6 +1,6 @@
 /* src/pages/HomePage/HomePage.module.css */
 .homePage {
-  background-color: var(--color-white);
+    background-color: #f8f9fa;
 }
 
 .mainContainer {

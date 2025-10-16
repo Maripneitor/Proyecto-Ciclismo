@@ -1,26 +1,31 @@
-// src/components/Notifications.jsx
-import React from 'react';
-import { useNotification } from '../contexts/NotificationContext';
+import React, { useContext } from 'react';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import { NotificationContext } from '../contexts/NotificationContext';
 import './Notifications.css';
 
-function Notifications() {
-    const { notifications } = useNotification();
-
-    const typeToClass = {
-        success: 'alert-success',
-        error: 'alert-danger',
-        info: 'alert-info',
-    };
+const Notifications = () => {
+    const { notifications, removeNotification } = useContext(NotificationContext);
 
     return (
-        <div className="notification-container">
-            {notifications.map(notif => (
-                <div key={notif.id} className={`alert ${typeToClass[notif.type] || 'alert-secondary'} notification-item`}>
-                    {notif.message}
-                </div>
+        <ToastContainer position="top-end" className="p-3">
+            {notifications.map((notification) => (
+                <Toast
+                    key={notification.id}
+                    onClose={() => removeNotification(notification.id)}
+                    show={true}
+                    delay={3000}
+                    autohide
+                    bg={notification.type}
+                    className="text-white"
+                >
+                    <Toast.Header>
+                        <strong className="me-auto">Notificación</strong>
+                    </Toast.Header>
+                    <Toast.Body>{notification.message}</Toast.Body>
+                </Toast>
             ))}
-        </div>
+        </ToastContainer>
     );
-}
+};
 
 export default Notifications;

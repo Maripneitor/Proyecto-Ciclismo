@@ -1,51 +1,54 @@
-// src/contexts/EventContext.jsx
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import apiClient from '../services/api';
 
-// Datos iniciales que se usarán solo la primera vez o si localStorage está vacío
-const initialEvents = [
-    { id: 1, name: 'Carrera del Bosque', date: '2025-10-10', description: 'Una carrera escénica a través del bosque.', distance: 10, type: 'Femenil' },
-    { id: 2, name: 'Reto de Montaña', date: '2025-11-05', description: 'Conquista las cimas más altas.', distance: 25, type: 'Varonil' },
-    { id: 3, name: 'Tour de la Ciudad', date: '2025-11-20', description: 'Recorre los puntos más icónicos.', distance: 15, type: 'Mixto' }
-];
-
-// --- CORRECCIÓN CLAVE: Se añade "export" aquí ---
 export const EventContext = createContext();
 
+export const useEvents = () => useContext(EventContext);
+
 export const EventProvider = ({ children }) => {
-    // Al iniciar, intenta cargar los eventos desde localStorage
-    const [events, setEvents] = useState(() => {
-        try {
-            const localEvents = localStorage.getItem('events');
-            return localEvents ? JSON.parse(localEvents) : initialEvents;
-        } catch (error) {
-            console.error("Error al leer los eventos de localStorage", error);
-            return initialEvents;
-        }
-    });
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Guarda los eventos en localStorage cada vez que cambien
     useEffect(() => {
-        localStorage.setItem('events', JSON.stringify(events));
-    }, [events]);
+        const fetchEvents = async () => {
+            try {
+                setLoading(true);
+                const response = await apiClient.get('/events');
+                setEvents(response.data);
+                setError(null);
+            } catch (err) {
+                console.error("Error al obtener los eventos del backend:", err);
+                setError("No se pudieron cargar los eventos. Inténtalo de nuevo más tarde.");
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const addEvent = (event) => {
-        const newEvent = { ...event, id: Date.now() };
-        setEvents(prevEvents => [...prevEvents, newEvent]);
+        fetchEvents();
+    }, []);
+
+    const addEvent = async (eventData) => {
+        try {
+            const response = await apiClient.post('/events', eventData);
+            setEvents(prevEvents => [...prevEvents, response.data]);
+            return response.data;
+        } catch (error) {
+            console.error("Error al crear el evento:", error);
+            throw error;
+        }
     };
 
-    const updateEvent = (updatedEvent) => {
-        setEvents(prevEvents => prevEvents.map(event => event.id === updatedEvent.id ? updatedEvent : event));
-    };
-
-    const deleteEvent = (eventId) => {
-        setEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
+    const getEventById = (eventId) => {
+        return events.find(event => event.id.toString() === eventId.toString());
     };
 
     const value = {
         events,
+        loading,
+        error,
         addEvent,
-        updateEvent,
-        deleteEvent
+        getEventById,
     };
 
     return (

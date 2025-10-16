@@ -8,14 +8,8 @@
 }
 
 .auth-container {
-  display: grid;
-  grid-template-columns: 40% 60%;
-  width: 100%;
-  max-width: 1200px;
-  min-height: 70vh;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .auth-sidebar {

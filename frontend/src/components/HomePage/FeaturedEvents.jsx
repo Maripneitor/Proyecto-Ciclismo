@@ -1,40 +1,29 @@
-// src/components/HomePage/FeaturedEvents.jsx
 import React, { useContext } from 'react';
-import { Row, Col, Placeholder, Card } from 'react-bootstrap';
+import { Row, Col, Spinner, Alert } from 'react-bootstrap';
 import { EventContext } from '../../contexts/EventContext';
-//  <-- 1. Importa el componente EventCard principal
 import EventCard from '../EventCard';
+import styles from './FeaturedEvents.module.css';
 
 const FeaturedEvents = () => {
-  const { events } = useContext(EventContext);
+    const { events, loading, error } = useContext(EventContext);
+    const featured = events.slice(0, 3);
 
-  if (!events || events.length === 0) {
-      return (
-          <Row>
-              {[...Array(3)].map((_, i) => (
-                  <Col md={6} lg={4} key={i} className="mb-4">
-                      <Card>
-                        <Placeholder as={Card.Body} animation="glow">
-                          <Placeholder xs={12} style={{height: '150px'}} />
-                          <Placeholder xs={6} /> <Placeholder xs={8} />
-                        </Placeholder>
-                      </Card>
-                  </Col>
-              ))}
-          </Row>
-      );
-  }
+    return (
+        <div className={styles.featuredContainer}>
+             {loading && <div className="text-center"><Spinner animation="border" /></div>}
+             {error && <Alert variant="danger">Error al cargar los eventos destacados.</Alert>}
 
-  return (
-    <Row>
-      {events.map(event => (
-        <Col md={6} lg={4} key={event.id} className="mb-4">
-            {/* 2. Usa el componente EventCard importado */}
-            <EventCard event={event} />
-        </Col>
-      ))}
-    </Row>
-  );
+            {!loading && !error && (
+                <Row>
+                    {featured.map(event => (
+                        <Col key={event.id} md={4} className="mb-4">
+                           <EventCard event={event} />
+                        </Col>
+                    ))}
+                </Row>
+            )}
+        </div>
+    );
 };
 
 export default FeaturedEvents;

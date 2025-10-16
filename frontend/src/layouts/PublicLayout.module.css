@@ -1,17 +1,20 @@
 .layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.navbar {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .mainContent {
-  flex-grow: 1;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+    flex: 1;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+    background-color: #343a40;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
 }

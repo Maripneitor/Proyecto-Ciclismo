@@ -1,11 +1,10 @@
 .hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1541625602330-22773444f428?q=80&w=2070&auto=format&fit=crop');
-  background-size: cover;
-  background-position: center;
-  padding: 8rem 0;
-  color: white;
+    background: url('https://images.unsplash.com/photo-1517649763962-0c623066013b?q=80&w=2070&auto=format&fit=crop') no-repeat center center;
+    background-size: cover;
+    padding: 100px 0;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
-
 .title {
   font-size: 3.5rem;
   font-weight: 700;

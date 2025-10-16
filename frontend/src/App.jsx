@@ -1,6 +1,7 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom"; // Ya no se importa BrowserRouter
 import { AuthProvider } from "./contexts/AuthContext";
+import { EventProvider } from "./contexts/EventContext";
 import PublicLayout from "./layouts/PublicLayout";
 import HomePage from "./pages/HomePage/HomePage";
 import LoginPage from "./pages/LoginPage";
@@ -15,8 +16,8 @@ import UserLayout from "./layouts/UserLayout";
 function App() {
   return (
     <AuthProvider>
-      {/* Hemos eliminado la propiedad 'basename' del Router */}
-      <Router>
+      <EventProvider>
+        {/* El componente <Router> ha sido eliminado de aquí */}
         <Routes>
           {/* Rutas Públicas */}
           <Route path="/" element={<PublicLayout />}>
@@ -55,7 +56,7 @@ function App() {
           {/* Puedes añadir una ruta para 'página no encontrada' */}
           <Route path="*" element={<h1>404: Página no encontrada</h1>} />
         </Routes>
-      </Router>
+      </EventProvider>
     </AuthProvider>
   );
 }
