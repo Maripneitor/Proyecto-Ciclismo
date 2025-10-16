@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom"; // Ya no se importa BrowserRouter
+import { Routes, Route } from "react-router-dom"; // SIN BrowserRouter
 import { AuthProvider } from "./contexts/AuthContext";
 import { EventProvider } from "./contexts/EventContext";
 import PublicLayout from "./layouts/PublicLayout";
@@ -17,7 +17,7 @@ function App() {
   return (
     <AuthProvider>
       <EventProvider>
-        {/* El componente <Router> ha sido eliminado de aquí */}
+        {/* BrowserRouter ya está en main.jsx, NO lo pongas aquí */}
         <Routes>
           {/* Rutas Públicas */}
           <Route path="/" element={<PublicLayout />}>
@@ -37,7 +37,6 @@ function App() {
             }
           >
             <Route path="home" element={<UserHomePage />} />
-            {/* Otras rutas de usuario aquí */}
           </Route>
 
           {/* Rutas Protegidas para Organizadores */}
@@ -50,10 +49,9 @@ function App() {
             }
           >
             <Route path="dashboard" element={<DashboardPage />} />
-            {/* Otras rutas de organizador aquí */}
           </Route>
 
-          {/* Puedes añadir una ruta para 'página no encontrada' */}
+          {/* Ruta 404 */}
           <Route path="*" element={<h1>404: Página no encontrada</h1>} />
         </Routes>
       </EventProvider>
