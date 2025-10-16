@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Container, Navbar, Nav, Button, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { useAuth } from "../contexts/AuthContext"; // <-- LÍNEA CORREGIDA
+import { useAuth } from "../contexts/AuthContext";
 import styles from "./PublicLayout.module.css";
 import logo from "/Logo.svg";
 
@@ -17,15 +17,15 @@ const PublicLayout = () => {
 
   return (
     <div className={styles.layout}>
-      <Navbar bg="light" expand="lg" sticky="top" className={styles.navbar}>
+      <Navbar bg="white" expand="lg" sticky="top" className={styles.navbar} collapseOnSelect>
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>
               <img
                 src={logo}
-                height="30"
+                height="35"
                 className="d-inline-block align-top"
-                alt="Logo"
+                alt="Logo Ciclismo"
               />
             </Navbar.Brand>
           </LinkContainer>
@@ -41,7 +41,7 @@ const PublicLayout = () => {
             </Nav>
             <Nav>
               {isAuthenticated ? (
-                <NavDropdown title={`Hola, ${user?.nombre || 'Usuario'}`} id="basic-nav-dropdown">
+                <NavDropdown title={`Hola, ${user?.nombre_completo || user?.nombre || 'Usuario'}`} id="basic-nav-dropdown">
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Mi Perfil</NavDropdown.Item>
                   </LinkContainer>

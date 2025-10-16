@@ -1,18 +1,17 @@
-/* src/layouts/PublicLayout.module.css */
-.publicLayout {
+.layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-.mainContent {
-  flex-grow: 1; /* Hace que el contenido principal ocupe todo el espacio disponible */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
 }
 
-.footer {
-  background-color: #343a40; /* Color oscuro para el pie de página */
-  color: white;
-  padding: 1.5rem 0;
-  text-align: center;
-  margin-top: auto; /* Empuja el footer al final de la página */
+.mainContent {
+  flex-grow: 1;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }

@@ -1,27 +1,25 @@
-// src/components/EventCardSkeleton.jsx
 import React from 'react';
 import { Card, Placeholder } from 'react-bootstrap';
-import styles from './EventCard.module.css';
 
-const EventCardSkeleton = () => (
-  <Card className={styles.eventCard}>
-    <Placeholder as={Card.Header} animation="glow">
-      <Placeholder xs={12} style={{ height: '200px' }} />
-    </Placeholder>
-    <Card.Body>
-      <Placeholder as={Card.Title} animation="glow">
-        <Placeholder xs={8} />
-      </Placeholder>
-      <Placeholder as={Card.Text} animation="glow">
-        <Placeholder xs={10} />
-        <Placeholder xs={4} />
-      </Placeholder>
-      <div className="d-flex justify-content-between align-items-center">
-        <Placeholder xs={3} />
-        <Placeholder.Button variant="success" xs={4} />
-      </div>
-    </Card.Body>
-  </Card>
-);
+const EventCardSkeleton = () => {
+  return (
+    <Card style={{ borderRadius: '15px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+      <Card.Body>
+        <Placeholder as={Card.Title} animation="glow">
+          <Placeholder xs={8} />
+        </Placeholder>
+        <Placeholder as={Card.Subtitle} animation="glow">
+          <Placeholder xs={5} />
+        </Placeholder>
+        <Placeholder as={Card.Text} animation="glow">
+          <Placeholder xs={11} />
+          <Placeholder xs={10} />
+          <Placeholder xs={7} />
+        </Placeholder>
+        <Placeholder.Button variant="primary" xs={12} />
+      </Card.Body>
+    </Card>
+  );
+};
 
 export default EventCardSkeleton;

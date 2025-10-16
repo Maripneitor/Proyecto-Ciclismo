@@ -1,20 +1,35 @@
-/* src/components/HomePage/HeroSection.module.css */
-.heroCarousel .carouselImage {
-  height: 60vh;
-  object-fit: cover;
-  filter: brightness(0.6);
+.hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1541625602330-22773444f428?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  padding: 8rem 0;
+  color: white;
 }
 
-.carouselCaption {
-  bottom: 20%;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+.title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-@media (max-width: 768px) {
-  .heroCarousel .carouselImage {
-    height: 50vh;
-  }
-  .carouselCaption h3 {
-    font-size: 1.5rem;
-  }
+.subtitle {
+  font-size: 1.25rem;
+  font-weight: 300;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaButton {
+  font-weight: 600;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.ctaButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
 }
