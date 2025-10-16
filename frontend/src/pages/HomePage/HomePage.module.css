@@ -1,9 +1,30 @@
-/* src/pages/HomePage/HomePage.module.css */
-.homePage {
-    background-color: #f8f9fa;
+.homepage {
+  display: flex;
+  flex-direction: column;
+  gap: 40px; /* Espaciado entre secciones */
 }
 
-.mainContainer {
-  padding-top: var(--spacing-xl);
-  padding-bottom: var(--spacing-xl);
+.sectionPadding {
+  padding: 0 var(--spacing-xl); /* Relleno lateral */
+  max-width: var(--max-width); /* Limita el ancho del contenido */
+  margin: 0 auto;
+}
+
+.sectionFeatured {
+  background-color: var(--color-background-secondary); /* Fondo gris claro */
+  padding: var(--spacing-xxl) var(--spacing-xl);
+}
+
+.sectionCategories {
+  padding: var(--spacing-xxl) var(--spacing-xl);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xxl); /* 28px o más grande */
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+  margin-bottom: 30px;
 }

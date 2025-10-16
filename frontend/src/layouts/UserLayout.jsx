@@ -1,47 +1,51 @@
-// src/layouts/UserLayout.jsx
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
-import { useAuth } from "../contexts/AuthContext"; // <-- CORRECCIÓN: Usa el hook desde /hooks
-import './UserLayout.css';
+import { Outlet, NavLink } from 'react-router-dom';
+import PublicLayout from './PublicLayout'; // Para reutilizar el Header y Footer
+import './UserLayout.css'; // Archivo de estilos para el layout
 
-function UserLayout() {
-  const { currentUser, logout } = useAuth();
+const navLinks = [
+  { to: 'dashboard', icon: '🏠', text: 'Mi Dashboard' },
+  { to: 'perfil', icon: '👤', text: 'Mis datos personales' },
+  { to: 'dependientes', icon: '👨‍👩‍👧', text: 'Mis dependientes' },
+  { to: 'direcciones', icon: '📍', text: 'Mis direcciones' },
+  { to: 'historico', icon: '⏱️', text: 'Mi Histórico' },
+  { to: 'fotos', icon: '📸', text: 'Mi Galería' },
+  { to: 'beneficios-plus', icon: '⭐', text: 'Mis beneficios PLUS' },
+  // ... más enlaces
+];
 
+const UserLayout = () => {
   return (
-    <div className="user-layout">
-      <header className="user-header">
-        <NavLink to="/user/profile">
-            {currentUser && <img src={`https://i.pravatar.cc/40?u=${currentUser.id}`} alt="Avatar" className="rounded-circle" />}
-        </NavLink>
-        <h1>Ciclomex</h1>
-        <div className="d-flex align-items-center">
-            <NavLink to="/user/notifications" className="me-3">
-                <i className="bi bi-bell-fill fs-4 text-white"></i>
-            </NavLink>
-            <button onClick={logout} className="btn btn-sm btn-outline-light">Salir</button>
-        </div>
-      </header>
-      
-      <main className="user-content">
-        <Outlet />
-      </main>
+    <PublicLayout>
+      <div className="user-layout-container">
+        {/* Menú Lateral Izquierdo */}
+        <aside className="sidebar">
+          <nav>
+            <ul>
+              {navLinks.map((link) => (
+                <li key={link.to}>
+                  <NavLink
+                    to={link.to}
+                    className={({ isActive }) =>
+                      isActive ? 'nav-link active' : 'nav-link'
+                    }
+                  >
+                    <span className="nav-icon">{link.icon}</span>
+                    {link.text}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </aside>
 
-      <nav className="user-bottom-nav">
-        <NavLink to="/user/home" className="nav-item">
-          <i className="bi bi-house-door-fill"></i>
-          <span>Inicio</span>
-        </NavLink>
-        <NavLink to="/user/events" className="nav-item">
-          <i className="bi bi-calendar-event-fill"></i>
-          <span>Eventos</span>
-        </NavLink>
-        <NavLink to="/user/profile" className="nav-item">
-          <i className="bi bi-person-fill"></i>
-          <span>Perfil</span>
-        </NavLink>
-      </nav>
-    </div>
+        {/* Panel de Contenido Derecho */}
+        <main className="content-panel">
+          <Outlet /> {/* Aquí se renderizarán las sub-vistas (DashboardPage, UserProfilePage, etc.) */}
+        </main>
+      </div>
+    </PublicLayout>
   );
-}
+};
 
 export default UserLayout;

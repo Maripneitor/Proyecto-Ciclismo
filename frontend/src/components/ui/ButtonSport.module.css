@@ -1,63 +1,78 @@
-/* src/components/ui/ButtonSport.module.css */
+/* Usando variables de tu designTokens.css */
 
 .button {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: var(--border-radius);
   cursor: pointer;
-}
-
-.btnSport {
-  font-family: var(--font-heading-sport);
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--border-radius);
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: var(--transition-fast);
+  padding: 12px 20px;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-md);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none; /* Para usar como enlace */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  font-size: var(--font-size-md);
 }
 
-.btnSport:disabled {
+.fullWidth {
+  width: 100%;
+}
+
+/* VARIANTE PRIMARY (Naranja principal) */
+.primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverted); /* Blanco */
+  border-color: var(--color-primary);
+}
+
+.primary:hover {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+/* VARIANTE SECONDARY (Borde azul) */
+.secondary {
+  background-color: transparent;
+  color: var(--color-secondary); /* Azul fuerte */
+  border-color: var(--color-secondary);
+}
+
+.secondary:hover {
+  background-color: var(--color-secondary-light);
+  color: var(--color-text-primary);
+}
+
+/* VARIANTE TERTIARY (Fondo claro/gris) */
+.tertiary {
+  background-color: var(--color-background-gray);
+  color: var(--color-text-primary);
+  border-color: var(--color-background-gray);
+}
+
+.tertiary:hover {
+  background-color: var(--color-background-darker-gray);
+}
+
+/* VARIANTE LINK */
+.link {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  padding: 0;
+  text-decoration: underline;
+  font-weight: var(--font-weight-regular);
+}
+
+/* ESTILO DISABLED */
+.disabled,
+.button[disabled] {
+  background-color: var(--color-background-disabled);
+  color: var(--color-text-disabled);
+  border-color: var(--color-border-disabled);
   cursor: not-allowed;
   opacity: 0.7;
 }
 
-/* Primary Variant */
-.primary {
-  background-color: var(--primary-cycling);
-  color: var(--color-white);
-}
-.primary:hover:not(:disabled) {
-  background-color: var(--primary-cycling-light);
-  transform: translateY(-2px);
-  box-shadow: var(--box-shadow);
-}
-
-/* Secondary Variant */
-.secondary {
-  background-color: var(--secondary-orange);
-  color: var(--color-white);
-}
-.secondary:hover:not(:disabled) {
-  background-color: var(--secondary-orange-dark);
-  transform: translateY(-2px);
-  box-shadow: var(--box-shadow);
-}
-
-/* Outline Variant */
-.outline {
-  background-color: transparent;
-  color: var(--primary-cycling);
-  border-color: var(--primary-cycling);
-}
-.outline:hover:not(:disabled) {
-  background-color: var(--primary-cycling);
-  color: var(--color-white);
-}
-
+/* Corregir si el componente EventCard.jsx necesita ButtonSport o ButtonSport.jsx */
+/* Revisa EventCard.jsx y cambia las importaciones a: */

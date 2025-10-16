@@ -1,73 +1,70 @@
-import React, { useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
-import { Link } from 'react-router-dom';
-import { Form, Button, Container, Row, Col, Card, Alert, Spinner } from 'react-bootstrap';
-import './AuthStyles.css';
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import PublicLayout from '../layouts/PublicLayout';
+import ButtonSport from '../components/ui/ButtonSport';
+import { AuthContext } from '../contexts/AuthContext';
+// CORRECCIÓN: Importación directa para estilos globales (SIN asignar a una variable)
+import '../pages/AuthStyles.css'; // Eliminar 'styles from'
 
 const LoginPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const { login } = useAuth();
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState(null);
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
-        setLoading(true);
-        try {
-            await login(email, password);
-            // La redirección ahora la maneja el AuthContext
-        } catch (err) {
-            setError('Error al iniciar sesión. Verifica tus credenciales.');
-        } finally {
-            setLoading(false);
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
 
-    return (
-        <Container className="auth-container">
-            <Row className="justify-content-md-center">
-                <Col md={6} lg={5}>
-                    <Card className="p-4 shadow-sm">
-                        <h2 className="text-center mb-4">Iniciar Sesión</h2>
-                        {error && <Alert variant="danger">{error}</Alert>}
-                        <Form onSubmit={handleSubmit}>
-                            <Form.Group className="mb-3" controlId="formBasicEmail">
-                                <Form.Label>Correo Electrónico</Form.Label>
-                                <Form.Control
-                                    type="email"
-                                    placeholder="Ingresa tu correo"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                    disabled={loading}
-                                />
-                            </Form.Group>
+    // Simulación de validación de formato de email
+    if (!email || !email.includes('@')) {
+      setError('Por favor, introduce un email válido.');
+      return;
+    }
 
-                            <Form.Group className="mb-3" controlId="formBasicPassword">
-                                <Form.Label>Contraseña</Form.Label>
-                                <Form.Control
-                                    type="password"
-                                    placeholder="Contraseña"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                    disabled={loading}
-                                />
-                            </Form.Group>
-                            <Button variant="primary" type="submit" className="w-100" disabled={loading}>
-                                {loading ? <Spinner as="span" animation="border" size="sm" /> : 'Entrar'}
-                            </Button>
-                        </Form>
-                        <div className="mt-3 text-center">
-                            ¿No tienes cuenta? <Link to="/register">Regístrate aquí</Link>
-                        </div>
-                    </Card>
-                </Col>
-            </Row>
-        </Container>
-    );
+    try {
+      // Intentar iniciar sesión (usando el mock de AuthContext)
+      await login(email); 
+      navigate('/cuenta/dashboard'); // Redirigir al dashboard
+    } catch (err) {
+      setError(err.message || 'Error al iniciar sesión. Verifica tus datos.');
+    }
+  };
+
+  return (
+    <PublicLayout>
+      <div className="auth-container">
+        <div className="auth-card">
+          <h2 className="auth-title">Inicia sesión</h2>
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="form-group">
+              <label htmlFor="email">Correo electrónico</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="ejemplo@correo.com"
+                required
+              />
+            </div>
+
+            {/* Al hacer clic en continuar, el backend debería verificar el email
+                y luego solicitar la contraseña o iniciar un flujo sin contraseña */}
+            <ButtonSport type="submit" variant="primary" fullWidth>
+              Continuar
+            </ButtonSport>
+
+            {error && <p className="auth-error">{error}</p>}
+          </form>
+
+          <p className="auth-link-text">
+            ¿No tienes cuenta? <Link to="/registro">Regístrate</Link>
+          </p>
+        </div>
+      </div>
+    </PublicLayout>
+  );
 };
 
 export default LoginPage;
