@@ -1,36 +1,21 @@
-// back/server.js
 const express = require('express');
-const { Pool } = require('pg');
 const cors = require('cors');
+const db = require('./models'); // Cambiado para importar desde el index.js de modelos
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3001;
-
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-});
-
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/test-db', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT NOW()');
-    res.json({
-      message: 'Conexión a la base de datos exitosa ✅',
-      time: result.rows[0].now,
-    });
-  } catch (error) {
-    console.error('Error al conectar con la base de datos:', error);
-    res.status(500).json({ error: 'No se pudo conectar a la base de datos ❌' });
-  }
-});
+// Rutas (se mantendrán por ahora, pero las actualizaremos después)
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/events', require('./routes/events'));
 
-app.listen(port, () => {
-  console.log(`🚀 Servidor backend corriendo en http://localhost:${port}`);
+const PORT = process.env.PORT || 5000;
+
+// Usamos db.sequelize para sincronizar
+db.sequelize.sync({ alter: true }).then(() => { // 'alter: true' es útil en desarrollo
+  app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
+}).catch(err => {
+  console.error('No se pudo conectar a la base de datos:', err);
 });

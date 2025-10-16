@@ -39,6 +39,13 @@
   --box-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.12);
   --transition-fast: all 0.2s ease-in-out;
 }
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --background-color: #f8f9fa;
+  --text-color: #212529;
+  --border-radius: 0.25rem;
+}
 
 /* --- CLASES DE ANIMACIÓN OPTIMIZADAS --- */
 .fade-in-up {
