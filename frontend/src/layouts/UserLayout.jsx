@@ -1,7 +1,7 @@
 // src/layouts/UserLayout.jsx
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth'; // <-- CORRECCIÓN: Usa el hook desde /hooks
+import { useAuth } from "../contexts/AuthContext"; // <-- CORRECCIÓN: Usa el hook desde /hooks
 import './UserLayout.css';
 
 function UserLayout() {

@@ -1,7 +1,7 @@
 // src/components/EventCard.jsx
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Card, Button, Badge } from 'react-bootstrap';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from "../contexts/AuthContext";
 import PriceDisplay from './PriceDisplay';
 import EventCardSkeleton from './EventCardSkeleton';
 import styles from './EventCard.module.css';

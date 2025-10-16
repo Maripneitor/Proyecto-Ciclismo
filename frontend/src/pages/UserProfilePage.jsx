@@ -1,6 +1,6 @@
 // src/pages/UserProfilePage.jsx
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth'; // <-- CORRECCIÓN: La importación apunta a la carpeta de hooks
+import { useAuth } from "../contexts/AuthContext"; // <-- CORRECCIÓN: La importación apunta a la carpeta de hooks
 import { useNotification } from '../contexts/NotificationContext';
 
 function UserProfilePage() {
